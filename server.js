@@ -3,6 +3,8 @@ const cookieParser=require("cookie-parser");
 const app=express();
 //中间件调用，下面这行代码实现了给req添加了一个cookies的属性，获取cookie的数据
 app.use(cookieParser());
+//静态资源管理
+app.use(express.static("public"));
 //路由
 app.get("/",(req,res)=>{//第一个参数是路径，第二个参数回调函数也是路由的处理函数
     // res.write("hello express");
