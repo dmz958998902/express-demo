@@ -1,0 +1,25 @@
+
+     <%- include("../layout/header.ejs") %>
+     <%- include("../layout/nav.ejs") %>
+    <div class="container my-5">
+      <div class="list-group list-group-flush">
+        <% for(var i=0;i<posts.length;i++){ %>
+        <div class="list-group-item flex-column align-items-start py-3">
+          <div class="d-flex justify-content-between">
+            <a class="text-dark w-75" href="#">
+              <h6><%= posts[i].title %></h6>
+            </a>
+            <small class="text-black-50 text-right"><%= posts[i].date %></small>
+          </div>
+          <div class="font-weight-light text-truncate"><%= posts[i].content %></div>
+          <div class="mt-2">
+            <a href="#" class="text-black-50">
+              <small><%= posts[i].name %></small>
+            </a>
+          </div>
+        </div>
+        <% } %>
+        </div>
+    </div>
+   <%- include("../layout/footer.ejs") %>
+   
