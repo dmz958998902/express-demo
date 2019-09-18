@@ -30,6 +30,34 @@ app.get("/getcookie",(req,res)=>{
 app.get("/hello/:id",(req,res)=>{
     console.log(req.params);
     res.send("哈哈哈哈哈哈");
-})
-
+});
+// const myfile=(req,res,next)=>{
+//     req.requestTime=new Date().getTime()
+//     next();
+// }
+const myfile=type=>{
+    return (req,res,next)=>{
+        let date=new Date()
+            let y=date.getFullYear()
+            let m=date.getMonth()+1
+            let r=date.getDate()
+        if(type==1){
+            req.requestTime=`${y}-${m}-${r}`
+        }else if(type==2){
+            req.requestTime=`${y}-${m}`
+        }else if(type==3){
+            req.requestTime=`${y}`
+        }
+        next();
+    }
+}
+//app.use(myfile(1));
+app.get("/test1",myfile(1),(req,res)=>{
+    console.log(req.requestTime);
+    res.send("test1");
+});
+app.get("/test2",myfile(2),(req,res)=>{
+    console.log(req.requestTime);
+    res.send("test2");
+});
 app.listen(3000);
