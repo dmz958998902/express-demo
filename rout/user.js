@@ -1,5 +1,6 @@
 const express=require("express");
 const UserModel=require("../model/cuser");
+const bcryptjs=require("bcryptjs");
 const router=express.Router();
 //跳转注册页面
 router.get("/register",(req,res)=>{
