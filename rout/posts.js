@@ -11,7 +11,10 @@ router.get("/",async (req,res)=>{
     let count=await PostModel.find().countDocuments()
     //console.log(count)
     total=Math.ceil(count/pageSize);
-    let list=await PostModel.find().skip((pageNum-1)*pageSize).limit(pageSize);
+    let list=await PostModel.find()
+    .sort({updatedAt:-1})
+    .skip((pageNum-1)*pageSize)
+    .limit(pageSize);
     //console.log(list);//这里的list是数据库查找的所有文章
     res.render("index.ejs",{
         list:list,
@@ -19,6 +22,8 @@ router.get("/",async (req,res)=>{
         total:total
     })
 })
+
+
 router.get("/create",(req,res)=>{
     
     res.render("createpost.ejs");
@@ -34,6 +39,20 @@ router.post("/store",async(req,res)=>{
         content:req.body.content
     });
     await newPost.save();
-    res.send("新增文章");
+    // res.send("新增文章");
+    res.redirect("/posts");//直接跳转你想去的页面
+})
+
+//文章详情页面
+router.get("/:id",async (req,res)=>{
+    //动态获取文章的ID，不能用req.query（这个获取的是静态的）
+    let id=req.params.id;
+    //根据ID区数据库找文章
+    let data= await PostModel.findById(id);
+    //console.log(data);
+    //将data数据渲染出去
+    res.render("showxq.ejs",{
+        information:data
+    });
 })
 module.exports=router
