@@ -14,6 +14,11 @@ app.use(express.urlencoded({extended:true}))
 //处理req.cookies
 app.use(cookieParser());
 //处理各种路由中间件
-app.use("/users",registerRouter);
 app.use("/posts",postRouter);
+app.use("/users",registerRouter);
+
+
+// app.get("/",(req,res)=>{
+//     res.redirect("/posts")
+// })
 app.listen(3000);
