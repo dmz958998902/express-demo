@@ -76,5 +76,16 @@ router.post("/update",async(req,res)=>{
         content:content
     });
     res.send("修改成功")
+});
+
+
+//删除接口
+router.delete("/:id",async(req,res)=>{
+    let id=req.params.id;
+    await PostModel.deleteOne({_id:id});
+    res.send({
+        code:1,
+        ms:"删除成功"
+    })
 })
 module.exports=router
