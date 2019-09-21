@@ -55,4 +55,26 @@ router.get("/:id",async (req,res)=>{
         information:data
     });
 })
+//文章编辑页面
+router.get("/:id/edit",async(req,res)=>{
+    let id=req.params.id;
+    let data= await PostModel.findById(id)
+    res.render("edit.ejs",{
+        title:data.title,
+        content:data.content,
+        ID:data._id//这个id  是给下面的修改内容用的
+    })
+})
+//修改页面内容
+router.post("/update",async(req,res)=>{
+    //获取id 在ejs中设置一个隐藏的input框保存id
+    let id=req.body.id;
+    let title=req.body.title
+    let content=req.body.content
+    let data=await PostModel.updateOne({_id:id},{
+        title:title,
+        content:content
+    });
+    res.send("修改成功")
+})
 module.exports=router
