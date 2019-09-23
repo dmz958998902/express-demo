@@ -1,9 +1,11 @@
 const express=require("express");
 const PostModel=require("../model/post");
+const auth=require("../middle/auth")
 const router=express.Router();
 
 //文章列表
-router.get("/",async (req,res)=>{
+router.get("/",auth(),async (req,res)=>{
+    console.log(req.session);
     //分页处理，从url地址获取这是第几页，煤业需要多少条
     let pageNum=parseInt(req.query.pageNum)||1;
     let pageSize=parseInt(req.query.pageSize)||5;
@@ -24,11 +26,11 @@ router.get("/",async (req,res)=>{
 })
 
 
-router.get("/create",(req,res)=>{
+router.get("/create",auth(),(req,res)=>{
     
     res.render("createpost.ejs");
 })
-router.post("/store",async(req,res)=>{
+router.post("/store",auth(),async(req,res)=>{
     if(!req.body.title||!req.body.content){
         res.send("添加文章失败");
         return
@@ -44,7 +46,7 @@ router.post("/store",async(req,res)=>{
 })
 
 //文章详情页面
-router.get("/:id",async (req,res)=>{
+router.get("/:id",auth(),async (req,res)=>{
     //动态获取文章的ID，不能用req.query（这个获取的是静态的）
     let id=req.params.id;
     //根据ID区数据库找文章
@@ -56,7 +58,7 @@ router.get("/:id",async (req,res)=>{
     });
 })
 //文章编辑页面
-router.get("/:id/edit",async(req,res)=>{
+router.get("/:id/edit",auth(),async(req,res)=>{
     let id=req.params.id;
     let data= await PostModel.findById(id)
     res.render("edit.ejs",{
@@ -66,7 +68,7 @@ router.get("/:id/edit",async(req,res)=>{
     })
 })
 //修改页面内容
-router.post("/update",async(req,res)=>{
+router.post("/update",auth(),async(req,res)=>{
     //获取id 在ejs中设置一个隐藏的input框保存id
     let id=req.body.id;
     let title=req.body.title
